@@ -22,6 +22,7 @@ spec:
           args:
             - "--storage.tsdb.path=/data"
             - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.retention={{ .Values.retention }}"
           ports:
             - name: http
               containerPort: 9090
@@ -34,5 +35,12 @@ spec:
         - name: config
           configMap:
             name: {{ include "prometheus.fullname" . }}
+
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "prometheus.fullname" . }}
+        {{- else }}
         - name: data
           emptyDir: {}
+        {{- end }}

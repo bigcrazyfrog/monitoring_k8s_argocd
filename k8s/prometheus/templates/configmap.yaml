@@ -36,7 +36,6 @@ data:
         kubernetes_sd_configs:
           - role: node
         relabel_configs:
-          # адрес ноды → kubelet endpoint
           - action: replace
             source_labels: [__address__]
             regex: (.*):\d+
