@@ -1,0 +1,6 @@
+image:
+  repository: prom/node-exporter
+  tag: v1.7.0
+  pullPolicy: IfNotPresent
+
+resources: {}

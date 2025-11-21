@@ -1,0 +1,8 @@
+global:
+  namespace: monitoring-v2
+
+prometheus:
+  enabled: true
+
+node-exporter:
+  enabled: true
