@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kube-state-metrics
+description: kube-state-metrics deployment for Kubernetes monitoring
+type: application
+version: 0.1.0
+appVersion: "2.13.0"

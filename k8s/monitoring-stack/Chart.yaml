@@ -12,3 +12,6 @@ dependencies:
   - name: node-exporter
     version: 0.1.0
     repository: "file://../node-exporter"
+  - name: kube-state-metrics
+    version: 0.1.0
+    repository: "file://../kube-state-metrics"
