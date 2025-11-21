@@ -17,6 +17,9 @@ data:
           - role: node
 
       - job_name: "node-exporter"
-        static_configs:
-          - targets:
-              - "node-exporter.monitoring-v2.svc.cluster.local:9100"
+        kubernetes_sd_configs:
+          - role: endpoints
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            action: keep
+            regex: monitoring-v2;node-exporter;metrics
