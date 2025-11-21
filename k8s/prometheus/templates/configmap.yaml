@@ -19,3 +19,11 @@ data:
           - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
             action: keep
             regex: monitoring-v2;node-exporter;metrics
+
+      - job_name: "kube-state-metrics"
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            regex: kube-state-metrics
+            action: keep
