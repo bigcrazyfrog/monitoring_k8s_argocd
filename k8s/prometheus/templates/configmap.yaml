@@ -28,10 +28,6 @@ data:
             regex: kube-state-metrics
             action: keep
 
-      - job_name: "kubernetes-nodes"
-        kubernetes_sd_configs:
-          - role: node
-
       - job_name: 'kubelet'
         scheme: https
         tls_config:
