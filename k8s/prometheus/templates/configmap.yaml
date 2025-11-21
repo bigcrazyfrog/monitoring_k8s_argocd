@@ -27,3 +27,37 @@ data:
           - source_labels: [__meta_kubernetes_pod_label_app]
             regex: kube-state-metrics
             action: keep
+
+      - job_name: "kubernetes-nodes"
+        kubernetes_sd_configs:
+          - role: node
+
+      - job_name: 'kubelet'
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          # адрес ноды → kubelet endpoint
+          - action: replace
+            source_labels: [__address__]
+            regex: (.*):\d+
+            replacement: ${1}:10250
+            target_label: __address__
+
+      - job_name: 'cadvisor'
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+          - role: node
+        metrics_path: /metrics/cadvisor
+        relabel_configs:
+          - action: replace
+            source_labels: [__address__]
+            regex: (.*):\d+
+            replacement: ${1}:10250
+            target_label: __address__
