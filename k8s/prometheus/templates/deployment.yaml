@@ -14,6 +14,8 @@ spec:
       labels:
         app: prometheus
     spec:
+      imagePullSecrets:
+        - name: dockerhub-secret
       serviceAccountName: {{ include "prometheus.fullname" . }}
       containers:
         - name: prometheus
