@@ -24,21 +24,14 @@ data:
             api_url: "{{ .Values.telegram.apiUrl }}"
             send_resolved: true
             parse_mode: "Markdown"
-            message: '{{`{{ template "telegram.default" . }}`}}'
+            message: |
+              *[{{`{{ .Status | toUpper }}`}}]* {{`{{ .CommonLabels.alertname }}`}}
+
+              {{`{{- range .Alerts }}`}}
+              *Severity*: {{`{{ .Labels.severity }}`}}
+              *Summary*: {{`{{ .Annotations.summary }}`}}
+              *Description*: {{`{{ .Annotations.description }}`}}
+              {{`{{- end }}`}}
         {{- else }}
-        # Telegram disabled
+        telegram_configs: []
         {{- end }}
-
-    templates:
-      - |
-        {{`{{ define "telegram.default" }}`}}
-        *[{{`{{ .Status | toUpper }}`}}]* {{`{{ .CommonLabels.alertname }}`}}
-
-        {{`{{- range .Alerts }}`}}
-        *Instance*: {{`{{ .Labels.instance }}`}}
-        *Severity*: {{`{{ .Labels.severity }}`}}
-        *Summary*: {{`{{ .Annotations.summary }}`}}
-        *Description*: {{`{{ .Annotations.description }}`}}
-
-        {{`{{ end }}`}}
-        {{`{{ end }}`}}

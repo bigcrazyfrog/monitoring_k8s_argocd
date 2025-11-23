@@ -26,12 +26,3 @@ data:
             annotations:
               summary: "Target {{`{{`}} $labels.job {{`}}`}} / {{`{{`}} $labels.instance {{`}}`}} недоступен"
               description: "Для job={{`{{`}} $labels.job {{`}}`}} instance={{`{{`}} $labels.instance {{`}}`}} метрики не приходят более 2 минут."
-
-          - alert: TestAlert
-            expr: vector(1)
-            for: 0m
-            labels:
-              severity: info
-            annotations:
-              summary: "Test alert from Prometheus"
-              description: "Проверка цепочки Prometheus → Alertmanager → Telegram."
