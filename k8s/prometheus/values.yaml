@@ -14,7 +14,7 @@ service:
 persistence:
   enabled: true
   size: 20Gi
-  storageClass: ""
+  storageClass: "prometheus-retain"
   accessModes:
     - ReadWriteOnce
 
