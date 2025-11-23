@@ -31,6 +31,8 @@ spec:
               mountPath: /etc/prometheus
             - name: data
               mountPath: /data
+            - name: rules
+              mountPath: /etc/prometheus/rules
       volumes:
         - name: config
           configMap:
@@ -44,3 +46,7 @@ spec:
         - name: data
           emptyDir: {}
         {{- end }}
+
+        - name: rules
+          configMap:
+            name: {{ include "prometheus.fullname" . }}-rules

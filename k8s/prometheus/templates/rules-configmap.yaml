@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "prometheus.fullname" . }}-rules
+  labels:
+    app: prometheus
+data:
+  basic.rules.yml: |
+    groups:
+      - name: infra-basic
+        rules:
+          - alert: InstanceDown
+            expr: up == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Instance {{ $labels.instance }} down"
+              description: "Endpoint {{ $labels.instance }} не отвечает более 5 минут."
+
+          - alert: PrometheusTargetMissing
+            expr: up == 0
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Target {{ $labels.job }} / {{ $labels.instance }} недоступен"
+              description: "Для job={{ $labels.job }} instance={{ $labels.instance }} метрики не приходят более 2 минут."
+
+          - alert: TestAlert
+            expr: vector(1)
+            for: 0m
+            labels:
+              severity: info
+            annotations:
+              summary: "Test alert from Prometheus"
+              description: "Проверка цепочки Prometheus → Alertmanager → Telegram."

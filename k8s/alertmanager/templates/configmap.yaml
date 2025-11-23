@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "alertmanager.fullname" . }}
+  labels:
+    {{- include "alertmanager.labels" . | nindent 4 }}
+data:
+  alertmanager.yml: |
+    global: {}
+
+    route:
+      receiver: "telegram"
+      group_by: {{ toJson .Values.route.group_by }}
+      group_wait: {{ .Values.route.group_wait }}
+      group_interval: {{ .Values.route.group_interval }}
+      repeat_interval: {{ .Values.route.repeat_interval }}
+
+    receivers:
+      - name: "telegram"
+        {{- if .Values.telegram.enabled }}
+        telegram_configs:
+          - bot_token: "{{ .Values.telegram.botToken }}"
+            chat_id: "{{ .Values.telegram.chatId }}"
+            api_url: "{{ .Values.telegram.apiUrl }}"
+            send_resolved: true
+            parse_mode: "Markdown"
+            message: '{{ "{{ template \"telegram.default\" . }}" }}'
+        {{- else }}
+        # Telegram disabled
+        {{- end }}
+
+    templates:
+      - |
+        {{`{{ define "telegram.default" }}`}}
+        *[{{`{{ .Status | toUpper }}`}}]* {{`{{ .CommonLabels.alertname }}`}}
+
+        {{`{{- range .Alerts }}`}}
+        *Instance*: {{`{{ .Labels.instance }}`}}
+        *Severity*: {{`{{ .Labels.severity }}`}}
+        *Summary*: {{`{{ .Annotations.summary }}`}}
+        *Description*: {{`{{ .Annotations.description }}`}}
+
+        {{`{{ end }}`}}
+        {{`{{ end }}`}}
