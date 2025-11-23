@@ -20,7 +20,7 @@ data:
         {{- if .Values.telegram.enabled }}
         telegram_configs:
           - bot_token: "{{ .Values.telegram.botToken }}"
-            chat_id: "{{ .Values.telegram.chatId }}"
+            chat_id: {{ .Values.telegram.chatId }}
             api_url: "{{ .Values.telegram.apiUrl }}"
             send_resolved: true
             parse_mode: "Markdown"
