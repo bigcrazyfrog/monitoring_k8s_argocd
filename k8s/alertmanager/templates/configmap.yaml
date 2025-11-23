@@ -24,7 +24,7 @@ data:
             api_url: "{{ .Values.telegram.apiUrl }}"
             send_resolved: true
             parse_mode: "Markdown"
-            message: '{{ "{{ template \"telegram.default\" . }}" }}'
+            message: '{{`{{ template "telegram.default" . }}`}}'
         {{- else }}
         # Telegram disabled
         {{- end }}
