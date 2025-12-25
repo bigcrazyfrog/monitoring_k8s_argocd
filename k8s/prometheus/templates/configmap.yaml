@@ -77,3 +77,8 @@ data:
       - job_name: "argocd-repo-server"
         static_configs:
           - targets: ["argocd-repo-server.argocd.svc.cluster.local:8084"]
+
+      - job_name: "notification-ms-gateway"
+        static_configs:
+          - targets: ["notification-ms-gateway.notify-system.svc.cluster.local:8000"]
+        metrics_path: "/metrics"
